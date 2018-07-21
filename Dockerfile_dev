@@ -1,0 +1,8 @@
+FROM docker-restarter:0.1.0
+
+RUN set -x \
+  && apk add --no-cache $PHPIZE_DEPS \
+  && pecl install xdebug \
+  && docker-php-ext-enable xdebug
+
+RUN composer install

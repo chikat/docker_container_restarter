@@ -4,19 +4,13 @@ version: '3'
 
 services:
   docker-restarter:
-    build:
-      context: .
-      dockerfile: Dockerfile_dev
-    image: local/docker-restarter
+    build: .
+    image: docker-restarter:0.1.0
     container_name: docker-restarter
     ports:
       - 80:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # develop
-      - .:/app:rw
-      # xdebug
-      - ./docker/runconf/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
     command: php -S 0.0.0.0:80 -t /app/public
 
   test:

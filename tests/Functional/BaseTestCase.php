@@ -2,6 +2,8 @@
 
 namespace Tests\Functional;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -13,7 +15,7 @@ use Slim\Http\Environment;
  * tuned to the specifics of this skeleton app, so if your needs are
  * different, you'll need to change it.
  */
-class BaseTestCase extends \PHPUnit_Framework_TestCase
+class BaseTestCase extends TestCase
 {
     /**
      * Use middleware when running application?
@@ -27,7 +29,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      *
      * @param string $requestMethod the request method (e.g. GET, POST, etc.)
      * @param string $requestUri the request URI
-     * @param array|object|null $requestData the request data
+     * @param array|null $requestData the request data
      * @return \Slim\Http\Response
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
@@ -58,7 +60,11 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         require __DIR__ . '/../../routes/api.php';
 
         // Process the application
-        $response = $app->process($request, $response);
+        try {
+            $response = $app->process($request, $response);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
 
         // Return the response
         return $response;
