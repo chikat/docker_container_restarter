@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  docker-restarter:
+    container_name: docker-restarter
+    image: php:7-alpine
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www
+    command: php -S 0.0.0.0:80 -t /var/www/public
+    environment:
+      - DOCKER_HOST=tcp://192.168.2.102:2375
